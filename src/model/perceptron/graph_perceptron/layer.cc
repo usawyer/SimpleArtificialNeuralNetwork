@@ -53,9 +53,24 @@ void s21::Layer::FeefForward() {
   }
 }
 
-void s21::Layer::CalculateError() {
-  double error = 0.0;
+void s21::Layer::CalculateOutputError(size_t expected) {
   for (size_t i = 0; i < layer_.size(); ++i) {
-    layer_[i].SetError(error);
+    double value = layer_[i].GetValue();
+    layer_[i].SetError(-value * (1 - value) *
+                       (static_cast<double>(i == expected) - value));
   }
+}
+
+void s21::Layer::CalculateError() {
+  for (size_t i = 0; i < layer_.size(); ++i)
+    layer_[i].CalculateError(ErrorSum(i));
+}
+
+double s21::Layer::ErrorSum(size_t index) {
+  double sum = 0.0;
+  for (size_t i = 0; i < next_layer_->GetLayer().size(); ++i) {
+    sum += next_layer_->GetLayer()[i].GetError() *
+           next_layer_->GetLayer()[i].GetWeightByIndex(index);
+  }
+  return sum;
 }

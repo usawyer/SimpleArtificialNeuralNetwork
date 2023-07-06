@@ -27,8 +27,10 @@ class Layer {
   //   заполнить рандомно
   //    принт
 
-  void CalculateError();
   void FeefForward();
+  void CalculateOutputError(size_t expected);
+  void CalculateError();
+  double ErrorSum(size_t index);
 
   void UpdateWeights();
   void FillWeightsRandomly();
@@ -38,8 +40,6 @@ class Layer {
   void Print();
 
   std::vector<Neuron>& GetLayer() { return layer_; }
-  Layer*& GetPrevLayer() { return prev_layer_; }
-  Layer*& GetNextLayer() { return next_layer_; }
 
   size_t GetSizeOfLayer() { return size_; }
 
@@ -57,7 +57,3 @@ class Layer {
 }  // namespace s21
 
 #endif  // SRC_MODEL_LAYER_H_
-
-// абстракт лейер лайер* prev layer* next
-
-//     set next layer

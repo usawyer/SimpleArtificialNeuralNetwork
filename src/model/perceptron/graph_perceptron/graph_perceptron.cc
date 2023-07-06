@@ -37,7 +37,13 @@ void s21::GraphPerceptron::FeefForward() {
   }
 }
 
-void s21::GraphPerceptron::BackPropagation() {}
+void s21::GraphPerceptron::BackPropagation() {
+  layers_[layers_.size() - 1]->CalculateOutputError(1);
+
+  for (int i = layers_.size() - 2; i >= 0; --i) {
+    layers_[i]->CalculateError();
+  }
+}
 
 int main() {
   std::vector<std::vector<std::vector<double>>> weights{
@@ -50,24 +56,36 @@ int main() {
   // test.FillWeightsRandomly();
   test.SetWeights(weights);
   test.FeefForward();
+  test.BackPropagation();
 
-  // std::vector<s21::Layer*> layers = test.GetLayerInfo();
+  std::vector<s21::Layer*> layers = test.GetLayerInfo();
 
-  // for (size_t i = 0; i < layers.size(); ++i) {
-  //   std::cout << layers[i]->GetSizeOfLayer() << std::endl;
-  //   std::vector<s21::Neuron> neurons = layers[i]->GetLayer();
+  for (size_t i = 0; i < layers.size(); ++i) {
+    // std::cout << layers[i]->GetSizeOfLayer() << std::endl;
+    std::vector<s21::Neuron> neurons = layers[i]->GetLayer();
 
-  //   for (size_t j = 0; j < neurons.size(); ++j) {
-  //     std::vector<double> weight = neurons[j].GetWeight();
-  //     std::cout << "[" << j << "]  value = " << neurons[j].GetValue()
-  //               << " raw value = " << neurons[j].GetRawValue() << std::endl;
-  //     if (weight.size() > 0) {
-  //       for (size_t k = 0; k < weight.size(); ++k) {
-  //         std::cout << weight[k] << " ";
-  //       }
-  //       std::cout << std::endl;
-  //     }
-  //   }
-  //   std::cout << std::endl;
-  // }
+    for (size_t j = 0; j < neurons.size(); ++j) {
+      std::vector<double> weight = neurons[j].GetWeight();
+      std::cout << "[" << j << "] value = " << neurons[j].GetValue()
+                << std::endl;
+      if (weight.size() > 0) {
+        std::cout << "weight = ";
+        for (size_t k = 0; k < weight.size(); ++k) {
+          std::cout << weight[k] << " ";
+        }
+        std::cout << std::endl;
+      }
+    }
+    std::cout << std::endl;
+  }
+
+  std::cout << "Errors: " << std::endl;
+  for (size_t i = 0; i < layers.size(); ++i) {
+    std::cout << "Layer " << i << std::endl;
+    std::vector<s21::Neuron> neurons = layers[i]->GetLayer();
+    for (size_t l = 0; l < neurons.size(); ++l) {
+      std::cout << neurons[l].GetError() << std::endl;
+    }
+    std::cout << std::endl;
+  }
 }
