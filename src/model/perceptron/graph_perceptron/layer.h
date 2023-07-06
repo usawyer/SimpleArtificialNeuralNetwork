@@ -1,7 +1,8 @@
 #ifndef SRC_MODEL_LAYER_H_
 #define SRC_MODEL_LAYER_H_
 
-#include <vector>
+#include <iostream>
+#include <random>
 
 #include "neuron.h"
 
@@ -27,7 +28,7 @@ class Layer {
   //    принт
 
   void CalculateError();
-  void CalculateValue();
+  void FeefForward();
 
   void UpdateWeights();
   void FillWeightsRandomly();
@@ -37,6 +38,9 @@ class Layer {
   void Print();
 
   std::vector<Neuron>& GetLayer() { return layer_; }
+  Layer*& GetPrevLayer() { return prev_layer_; }
+  Layer*& GetNextLayer() { return next_layer_; }
+
   size_t GetSizeOfLayer() { return size_; }
 
   //           гет нейронс

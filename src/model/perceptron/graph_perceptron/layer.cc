@@ -43,12 +43,19 @@ double s21::Layer::RandomGenerator() {
   return choise(generator);
 }
 
-void s21::Layer::CalculateValue() {
+void s21::Layer::FeefForward() {
   std::vector<double> previous_layer_values;
   for (size_t i = 0; i < prev_layer_->GetLayer().size(); ++i) {
     previous_layer_values.push_back(prev_layer_->GetLayer()[i].GetValue());
   }
   for (size_t i = 0; i < layer_.size(); ++i) {
     layer_[i].CalculateValue(previous_layer_values);
+  }
+}
+
+void s21::Layer::CalculateError() {
+  double error = 0.0;
+  for (size_t i = 0; i < layer_.size(); ++i) {
+    layer_[i].SetError(error);
   }
 }
