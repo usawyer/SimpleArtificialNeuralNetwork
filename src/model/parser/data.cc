@@ -46,23 +46,3 @@ void s21::Data::Reshuffle() {
   std::random_device random_device;
   std::shuffle(data_.begin(), data_.end(), random_device);
 }
-
-// int main() {
-//   s21::Data test;
-//   test.Parse("/Users/bfile/Projects/CPP7_MLP-2/src/source/dataset/test.csv");
-
-//   std::cout << test.GetData().size() << std::endl;
-//   std::cout << std::endl;
-
-//   for (size_t i = 0; i < test.GetData().size(); ++i) {
-//     std::cout << test.GetData()[i].GetLetter() << std::endl;
-//     std::cout << test.GetData()[i].GetSignals().size() << std::endl;
-//   }
-//   std::cout << std::endl;
-
-//   for (auto& signals : test.GetData()[0].GetSignals()) {
-//     std::cout << signals << " ";
-//   }
-
-//   std::cout << test.GetData()[0].GetSignals().size() << std::endl;
-// }

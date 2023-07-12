@@ -18,22 +18,24 @@
 #ifndef SRC_MODEL_GRAPH_PERCEPTRON_H_
 #define SRC_MODEL_GRAPH_PERCEPTRON_H_
 
+#include <iostream>
+
 #include "../interface_perceptron.h"
 #include "layer.h"
 
 namespace s21 {
 class GraphPerceptron : InterfacePerceptron {
  public:
-  GraphPerceptron(size_t size);
-  ~GraphPerceptron() {
-    for (auto& layer : layers_) {
-      delete layer;
-    }
-  }
+  explicit GraphPerceptron(size_t size);
+  GraphPerceptron(const GraphPerceptron& other) = default;
+  GraphPerceptron(GraphPerceptron&& other) = default;
+  GraphPerceptron& operator=(const GraphPerceptron& other) = default;
+  GraphPerceptron& operator=(GraphPerceptron&& other) = default;
+  ~GraphPerceptron();
 
   void InitLayers();
   void SetInputValues(std::vector<double>& input_values);
-  void FeefForward();
+  void FeedForward();
   void BackPropagation();
   void Train(int from, int to);
   // void SetWeights(std::vector<double> weights);
@@ -49,6 +51,8 @@ class GraphPerceptron : InterfacePerceptron {
  private:
   std::vector<Layer*> layers_;
   size_t size_;
+
+  Data data_;
 };
 }  // namespace s21
 

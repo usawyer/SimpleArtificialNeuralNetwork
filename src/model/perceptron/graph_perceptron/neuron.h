@@ -1,14 +1,19 @@
 #ifndef SRC_MODEL_NEURON_H_
 #define SRC_MODEL_NEURON_H_
 
+#include <algorithm>
 #include <cmath>
+#include <random>
 #include <vector>
 
 namespace s21 {
+const double kLearningRate = 0.01;
+
 class Neuron {
  public:
   void CalculateValue(std::vector<double>& previous_layer_values);
   void CalculateError(double sum);
+  void UpdateWeight(std::vector<double>& previous_layer_values);
 
   double GetWeightByIndex(size_t index) { return weights_[index]; }
   std::vector<double> GetWeight() { return weights_; }
@@ -17,11 +22,12 @@ class Neuron {
 
   void SetValue(double value) { value_ = value; }
   void SetError(double error) { error_ = error; }
-  void SetWeight(std::vector<double> weights) { weights_ = weights; }
+  void SetWeightRandomly(size_t size);
+  void SetWeight(std::vector<double>& weights);
 
  private:
-  double value_ = 0;
-  double error_ = 0;
+  double value_ = 0.0;
+  double error_ = 0.0;
 
   std::vector<double> weights_;
   std::vector<double> delta_weights_;
