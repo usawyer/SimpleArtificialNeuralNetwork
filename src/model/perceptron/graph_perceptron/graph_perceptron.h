@@ -18,6 +18,7 @@
 #ifndef SRC_MODEL_GRAPH_PERCEPTRON_H_
 #define SRC_MODEL_GRAPH_PERCEPTRON_H_
 
+#include <filesystem>
 #include <iostream>
 
 #include "../interface_perceptron.h"
@@ -26,7 +27,7 @@
 namespace s21 {
 class GraphPerceptron : InterfacePerceptron {
  public:
-  explicit GraphPerceptron(size_t size);
+  GraphPerceptron(Data& data, size_t size);
   GraphPerceptron(const GraphPerceptron& other) = default;
   GraphPerceptron(GraphPerceptron&& other) = default;
   GraphPerceptron& operator=(const GraphPerceptron& other) = default;
@@ -36,14 +37,18 @@ class GraphPerceptron : InterfacePerceptron {
   void InitLayers();
   void SetInputValues(std::vector<double>& input_values);
   void FeedForward();
-  void BackPropagation();
-  void Train(int from, int to);
+  void BackPropagation(size_t expected);
+  // void Train(int from, int to);
+  void Train();
+
   // void SetWeights(std::vector<double> weights);
   void SetWeights(std::vector<std::vector<std::vector<double>>> weights);
 
   void LoadWeights();
   // Metrics& Experiment(int from, int to);
   void FillWeightsRandomly();
+
+  void SaveWeight(const std::filesystem::path& filename);
 
   size_t GetSizeOfHiddenLayers() { return size_; }
   std::vector<Layer*>& GetLayerInfo() { return layers_; }

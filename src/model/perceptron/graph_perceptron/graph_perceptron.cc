@@ -1,6 +1,7 @@
 #include "graph_perceptron.h"
 
-s21::GraphPerceptron::GraphPerceptron(size_t size) : size_(size) {
+s21::GraphPerceptron::GraphPerceptron(Data& data, size_t size)
+    : data_(data), size_(size) {
   InitLayers();
 }
 
@@ -23,7 +24,8 @@ void s21::GraphPerceptron::SetInputValues(std::vector<double>& input_values) {
 }
 
 void s21::GraphPerceptron::FillWeightsRandomly() {
-  for (size_t i = 1; i < layers_.size(); ++i) {
+  size_t size = layers_.size();
+  for (size_t i = 1; i < size; ++i) {
     layers_[i]->FillWeightsRandomly();
   }
 }
@@ -38,13 +40,14 @@ void s21::GraphPerceptron::SetWeights(
 }
 
 void s21::GraphPerceptron::FeedForward() {
-  for (size_t i = 1; i < layers_.size(); ++i) {
+  size_t size = layers_.size();
+  for (size_t i = 1; i < size; ++i) {
     layers_[i]->FeedForward();
   }
 }
 
-void s21::GraphPerceptron::BackPropagation() {
-  layers_[layers_.size() - 1]->CalculateOutputError(1);
+void s21::GraphPerceptron::BackPropagation(size_t expected) {
+  layers_[layers_.size() - 1]->CalculateOutputError(expected);
 
   for (int i = layers_.size() - 2; i >= 0; --i) {
     layers_[i]->CalculateError();
@@ -54,3 +57,63 @@ void s21::GraphPerceptron::BackPropagation() {
     layers_[i]->UpdateWeights();
   }
 }
+
+void s21::GraphPerceptron::Train() {
+  FillWeightsRandomly();
+  SaveWeight(
+      "/Users/bfile/Projects/SimpleArtificialNeuralNetwork/src/source/dataset/"
+      "check.csv");
+
+  // for (size_t i = 0; i < 4; ++i) {
+  for (size_t j = 0; j < data_.GetData().size(); ++j) {
+    std::vector<double> input_values = data_.GetData()[j].GetSignals();
+    SetInputValues(input_values);
+    FeedForward();
+    BackPropagation(data_.GetData()[j].GetLetter());
+  }
+  // }
+
+  std::vector<double> input_values = data_.GetData()[1].GetSignals();
+  SetInputValues(input_values);
+  FeedForward();
+  std::cout << "EXPECTED: " << data_.GetData()[1].GetLetter() << std::endl;
+
+  std::vector<Neuron> output = layers_[layers_.size() - 1]->GetLayer();
+
+  double max = 0.0;
+  int index = 0;
+  for (size_t i = 0; i < output.size(); ++i) {
+    if (output[i].GetValue() > max) {
+      max = output[i].GetValue();
+      index = i;
+    }
+  }
+
+  std::cout << index << " " << max << std::endl;
+  std::cout << output[1].GetValue();
+}
+
+void s21::GraphPerceptron::SaveWeight(const std::filesystem::path& filename) {
+  std::ofstream file;
+  file.open(filename);
+
+  for (auto it = layers_.begin() + 1; it != layers_.end(); ++it) {
+    std::vector<Neuron> sloi = (*it)->GetLayer();
+    for (auto it1 = sloi.begin(); it1 != sloi.end(); ++it1) {
+      std::vector<double> weight = (*it1).GetWeight();
+      for (auto it2 = weight.begin(); it2 != weight.end(); ++it2) {
+        file << (*it2) << " ";
+      }
+      file << std::endl;
+    }
+    file << std::endl;
+  }
+
+  file.close();
+}
+
+// сохранить веса
+// загрузить веса из файла
+// получить результат
+// трейн
+// эксперимент

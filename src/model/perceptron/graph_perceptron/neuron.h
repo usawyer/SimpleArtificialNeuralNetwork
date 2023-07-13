@@ -6,8 +6,9 @@
 #include <random>
 #include <vector>
 
+#include "../interface_perceptron.h"
+
 namespace s21 {
-const double kLearningRate = 0.01;
 
 class Neuron {
  public:

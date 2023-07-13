@@ -1,7 +1,7 @@
 #include "data.h"
 
 s21::Symbol::Symbol(const std::string& str) {
-  signals_.reserve(784);
+  signals_.reserve(kInputLayerSize);
   ReadLetter(str);
 }
 

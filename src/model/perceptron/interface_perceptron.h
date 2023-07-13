@@ -7,13 +7,15 @@
 
 namespace s21 {
 
-// const int kInputLayerSize = 784;
-// const int kHiddenLayerSize = 140;
-// const int kOutputLayerSize = 26;
+const int kInputLayerSize = 784;
+const int kHiddenLayerSize = 140;
+const int kOutputLayerSize = 26;
+const double kLearningRate = 0.09;
 
-const int kInputLayerSize = 3;
-const int kHiddenLayerSize = 3;
-const int kOutputLayerSize = 3;
+// const int kInputLayerSize = 3;
+// const int kHiddenLayerSize = 3;
+// const int kOutputLayerSize = 3;
+// const double kLearningRate = 0.1;
 
 class InterfacePerceptron {
  public:

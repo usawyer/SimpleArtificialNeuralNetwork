@@ -3,14 +3,13 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <random>
 #include <sstream>
 #include <vector>
 
-namespace s21 {
-// const int kInputLayerSize = 784;
+#include "../perceptron/interface_perceptron.h"
 
+namespace s21 {
 class Symbol {
  public:
   Symbol(const Symbol& other) = default;
@@ -22,7 +21,7 @@ class Symbol {
   explicit Symbol(const std::string& str);
 
   size_t GetLetter() { return letter_; }
-  std::vector<double> GetSignals() { return signals_; }
+  std::vector<double>& GetSignals() { return signals_; }
 
  private:
   std::vector<std::string> SplitLine(const std::string& str, char delim);
@@ -37,7 +36,7 @@ class Data {
   std::vector<Symbol> Parse(const std::string& file_path);
   void Reshuffle();
 
-  std::vector<Symbol> GetData() { return data_; }
+  std::vector<Symbol>& GetData() { return data_; }
 
  private:
   void ReadFile(std::ifstream& file);
