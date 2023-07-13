@@ -60,9 +60,6 @@ void s21::GraphPerceptron::BackPropagation(size_t expected) {
 
 void s21::GraphPerceptron::Train() {
   FillWeightsRandomly();
-  SaveWeight(
-      "/Users/bfile/Projects/SimpleArtificialNeuralNetwork/src/source/dataset/"
-      "check.csv");
 
   // for (size_t i = 0; i < 4; ++i) {
   for (size_t j = 0; j < data_.GetData().size(); ++j) {
@@ -73,10 +70,13 @@ void s21::GraphPerceptron::Train() {
   }
   // }
 
-  std::vector<double> input_values = data_.GetData()[1].GetSignals();
+  int stroka = 56;
+  std::vector<double> input_values = data_.GetData()[stroka].GetSignals();
   SetInputValues(input_values);
   FeedForward();
-  std::cout << "EXPECTED: " << data_.GetData()[1].GetLetter() << std::endl;
+
+  int letter = data_.GetData()[stroka].GetLetter();
+  std::cout << "EXPECTED: " << letter << std::endl;
 
   std::vector<Neuron> output = layers_[layers_.size() - 1]->GetLayer();
 
@@ -89,8 +89,8 @@ void s21::GraphPerceptron::Train() {
     }
   }
 
-  std::cout << index << " " << max << std::endl;
-  std::cout << output[1].GetValue();
+  std::cout << "GET: " << index << " " << max << std::endl;
+  std::cout << output[letter].GetValue();
 }
 
 void s21::GraphPerceptron::SaveWeight(const std::filesystem::path& filename) {
